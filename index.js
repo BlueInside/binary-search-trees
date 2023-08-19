@@ -10,10 +10,14 @@ function node(d) {
 }
 
 function tree(arr) {
-  let array = removeDuplicates(arr);
-  array = mergeSort(array);
-  let root = buildTree(array, 0, array.length - 1);
-
+  let root;
+  if (arr) {
+    let array = removeDuplicates(arr);
+    array = mergeSort(array);
+    root = buildTree(array, 0, array.length - 1);
+  } else {
+    root = null;
+  }
   function buildTree(arr, start, end) {
     if (start > end) return null;
     const mid = Math.floor((start + end) / 2);
@@ -23,6 +27,7 @@ function tree(arr) {
     return newNode;
   }
   function insert(value) {
+    if (!Number(value)) return 'please enter a number';
     root = insertRec(value, root);
   }
   function insertRec(value, currentNode) {
@@ -36,6 +41,20 @@ function tree(arr) {
       currentNode.left = insertRec(value, currentNode.left);
     return currentNode;
   }
+  function deleteNode(value, currentNode = root) {
+    if (currentNode === null) {
+      return currentNode;
+    }
+    if (value > currentNode.data) {
+      currentNode.right = deleteNode(value, currentNode.right);
+    }
+    if (value < currentNode.data) {
+      currentNode.left = deleteNode(value, currentNode.left);
+    }
+
+    // Finish here
+  }
+
   function mergeSort(arr) {
     if (arr.length <= 1) return arr;
 
@@ -51,7 +70,6 @@ function tree(arr) {
     let i = 0;
     let j = 0;
     let result = [];
-    let longerArr = left.length > right.length ? left.length : right.length;
     while (i < left.length && j < right.length) {
       if (left[i] < right[j]) result.push(left[i++]);
       else result.push(right[j++]);
@@ -86,7 +104,8 @@ function tree(arr) {
     }
   }
 
-  return { root, prettyPrint, insert };
+  return { prettyPrint, insert };
 }
 
 const drive = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 230, 6345, 324];
+const tree2 = tree(drive);
