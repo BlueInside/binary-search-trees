@@ -83,6 +83,19 @@ function tree(arr) {
       return currentNode;
     }
   }
+  function find(value) {
+    return findRec(value, root);
+  }
+  function findRec(value, currentNode) {
+    if (currentNode === null) return currentNode;
+    if (value > currentNode.data) {
+      return findRec(value, currentNode.right);
+    } else if (value < currentNode.data) {
+      return findRec(value, currentNode.left);
+    } else {
+      return currentNode;
+    }
+  }
 
   function mergeSort(arr) {
     if (arr.length <= 1) return arr;
@@ -133,7 +146,7 @@ function tree(arr) {
     }
   }
 
-  return { prettyPrint, insert, deleteNode };
+  return { prettyPrint, insert, deleteNode, find };
 }
 
 const drive = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 230, 6345, 324];
