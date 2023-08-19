@@ -12,7 +12,7 @@ function node(d) {
 function tree(arr) {
   let array = removeDuplicates(arr);
   array = mergeSort(array);
-  const root = buildTree(array, 0, array.length - 1);
+  let root = buildTree(array, 0, array.length - 1);
 
   function buildTree(arr, start, end) {
     if (start > end) return null;
@@ -22,18 +22,20 @@ function tree(arr) {
     newNode.right = buildTree(arr, mid + 1, end);
     return newNode;
   }
-  //   function insert(value) {
-  //     root = insertRec(value, root);
-  //   }
-  //   function insertRec(value, root) {
-  //     if (root == null) {
-  //       root = new node(value);
-  //       return root;
-  //     }
-  //     if (value < root.data) root.left = insertRec(value, root.left);
-  //     else root.right = insertRec(value, root.right);
-  //     return root;
-  //   }
+  function insert(value) {
+    root = insertRec(value, root);
+  }
+  function insertRec(value, currentNode) {
+    if (!currentNode) {
+      currentNode = node(value);
+      return currentNode;
+    }
+    if (value > currentNode.data)
+      currentNode.right = insertRec(value, currentNode.right);
+    if (value < currentNode.data)
+      currentNode.left = insertRec(value, currentNode.left);
+    return currentNode;
+  }
   function mergeSort(arr) {
     if (arr.length <= 1) return arr;
 
@@ -84,7 +86,7 @@ function tree(arr) {
     }
   }
 
-  return { root, prettyPrint };
+  return { root, prettyPrint, insert };
 }
 
 const drive = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 230, 6345, 324];
