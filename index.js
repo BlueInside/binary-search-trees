@@ -41,18 +41,47 @@ function tree(arr) {
       currentNode.left = insertRec(value, currentNode.left);
     return currentNode;
   }
-  function deleteNode(value, currentNode = root) {
+  function deleteNode(value) {
+    if (!Number(value)) return 'please enter a number';
+    root = deleteNodeRec(value, root);
+  }
+  function deleteNodeRec(value, currentNode) {
     if (currentNode === null) {
       return currentNode;
     }
     if (value > currentNode.data) {
-      currentNode.right = deleteNode(value, currentNode.right);
+      currentNode.right = deleteNodeRec(value, currentNode.right);
+      return currentNode;
     }
     if (value < currentNode.data) {
-      currentNode.left = deleteNode(value, currentNode.left);
-    }
+      currentNode.left = deleteNodeRec(value, currentNode.left);
+      return currentNode;
+    } else {
+      if (currentNode.left === null) {
+        return currentNode.right;
+      } else if (currentNode.right === null) {
+        return currentNode;
+      } else {
+        let parent = currentNode;
+        let childBigger = currentNode.right;
+        while (childBigger.left !== null) {
+          parent = childBigger;
+          childBigger = parent.left;
+        }
+        if (parent !== currentNode) {
+          parent.left = childBigger.right;
+          currentNode.data = childBigger.data;
+          childBigger = null;
+        } else {
+          let temp = currentNode.left;
+          currentNode = currentNode.right;
+          currentNode.left = temp;
+          temp = null;
+        }
+      }
 
-    // Finish here
+      return currentNode;
+    }
   }
 
   function mergeSort(arr) {
@@ -104,7 +133,7 @@ function tree(arr) {
     }
   }
 
-  return { prettyPrint, insert };
+  return { prettyPrint, insert, deleteNode };
 }
 
 const drive = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 230, 6345, 324];
