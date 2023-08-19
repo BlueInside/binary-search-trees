@@ -96,7 +96,49 @@ function tree(arr) {
       return currentNode;
     }
   }
+  function levelOrder(callback) {
+    if (!callback) {
+      const result = levelOrderRc(callback, root);
+      return result;
+    } else {
+      levelOrder(callback, root);
+    }
+  }
+  function levelOrderRc(callback, currentNode) {
+    let result = [];
+    if (currentNode === null) return;
 
+    let queue = [];
+    queue.push(currentNode);
+    while (queue.length !== 0) {
+      let current = queue.shift();
+
+      if (!callback) {
+        result.push(current.data);
+      } else {
+        callback(current);
+      }
+      if (current.left !== null) queue.push(current.left);
+      if (current.right !== null) queue.push(current.right);
+    }
+    if (!callback) return result;
+    return;
+  }
+  function preorder(callback, currentNode = root, result = []) {
+    if (currentNode === null) return result;
+    if (callback) {
+      callback(currentNode);
+    } else {
+      result.push(currentNode.data);
+    }
+    result = preorder(callback, currentNode.left, result);
+    result = preorder(callback, currentNode.right, result);
+    if (!callback) return result;
+  }
+
+  function inorder(callback) {}
+
+  function postorder(callback) {}
   function mergeSort(arr) {
     if (arr.length <= 1) return arr;
 
@@ -146,7 +188,7 @@ function tree(arr) {
     }
   }
 
-  return { prettyPrint, insert, deleteNode, find };
+  return { prettyPrint, insert, deleteNode, find, levelOrder, preorder };
 }
 
 const drive = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 230, 6345, 324];
