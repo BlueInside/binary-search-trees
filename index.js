@@ -135,10 +135,45 @@ function tree(arr) {
     result = preorder(callback, currentNode.right, result);
     if (!callback) return result;
   }
+  // implement these
+  function inorder(callback, currentNode = root, result = []) {
+    if (currentNode === null) return result;
 
-  function inorder(callback) {}
+    result = inorder(callback, currentNode.left, result);
 
-  function postorder(callback) {}
+    if (callback) {
+      callback(currentNode);
+    } else {
+      result.push(currentNode.data);
+    }
+
+    result = inorder(callback, currentNode.right, result);
+    if (!callback) return result;
+  }
+
+  function postorder(callback, currentNode = root, result = []) {
+    if (currentNode === null) return result;
+
+    result = postorder(callback, currentNode.left, result);
+    result = postorder(callback, currentNode.right, result);
+
+    if (callback) {
+      callback(currentNode);
+    } else {
+      result.push(currentNode.data);
+      return result;
+    }
+  }
+
+  function height(currentNode = root) {
+    let left = 0;
+    let right = 0;
+    if (currentNode === null) return 0;
+    if (currentNode.left === null && currentNode.right === null) return 0;
+    left = height(currentNode.left);
+    right = height(currentNode.right);
+    return Math.max(left, right) + 1;
+  }
   function mergeSort(arr) {
     if (arr.length <= 1) return arr;
 
@@ -188,7 +223,17 @@ function tree(arr) {
     }
   }
 
-  return { prettyPrint, insert, deleteNode, find, levelOrder, preorder };
+  return {
+    prettyPrint,
+    insert,
+    deleteNode,
+    find,
+    levelOrder,
+    preorder,
+    inorder,
+    postorder,
+    height,
+  };
 }
 
 const drive = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 230, 6345, 324];
