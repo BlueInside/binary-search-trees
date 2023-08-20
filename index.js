@@ -135,7 +135,7 @@ function tree(arr) {
     result = preorder(callback, currentNode.right, result);
     if (!callback) return result;
   }
-  // implement these
+
   function inorder(callback, currentNode = root, result = []) {
     if (currentNode === null) return result;
 
@@ -173,6 +173,27 @@ function tree(arr) {
     left = height(currentNode.left);
     right = height(currentNode.right);
     return Math.max(left, right) + 1;
+  }
+  function depth(node, currentNode = root, edges = 0) {
+    if (currentNode === null) return -1;
+    if (node.data < currentNode.data) {
+      return depth(node, currentNode.left, (edges += 1));
+    }
+    if (node.data > currentNode.data) {
+      return depth(node, currentNode.right, (edges += 1));
+    }
+    return edges;
+  }
+
+  function isBalanced(currentNode = root) {
+    if (currentNode === null) {
+      return true;
+    }
+
+    let left = height(currentNode.left);
+    let right = height(currentNode.right);
+    if (Math.abs(left - right) > 1) return false;
+    return true;
   }
   function mergeSort(arr) {
     if (arr.length <= 1) return arr;
@@ -233,8 +254,13 @@ function tree(arr) {
     inorder,
     postorder,
     height,
+    depth,
+    isBalanced,
   };
 }
 
 const drive = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 230, 6345, 324];
+const node1 = node(5);
+const node2 = node(8);
+const node3 = node(6345);
 const tree2 = tree(drive);
