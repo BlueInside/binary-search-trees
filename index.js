@@ -195,6 +195,12 @@ function tree(arr) {
     if (Math.abs(left - right) > 1) return false;
     return true;
   }
+  function rebalance(currentNode = root) {
+    if (currentNode === null) return;
+    let array = inorder();
+    root = buildTree(array, 0, array.length - 1);
+    prettyPrint(root);
+  }
   function mergeSort(arr) {
     if (arr.length <= 1) return arr;
 
@@ -256,11 +262,14 @@ function tree(arr) {
     height,
     depth,
     isBalanced,
+    rebalance,
   };
 }
-
-const drive = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 230, 6345, 324];
-const node1 = node(5);
-const node2 = node(8);
-const node3 = node(6345);
-const tree2 = tree(drive);
+function randomArray() {
+  let result = [];
+  for (let index = 0; index < 40; index++) {
+    const randomNum = Math.floor(Math.random() * 99);
+    result.push(randomNum);
+  }
+  return result;
+}
